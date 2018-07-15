@@ -26,6 +26,7 @@ public class Controller implements EventHandler {
             switch (keyCode) {
                 case ENTER:
                     model.stopOrRun();
+                    model.onOrOffAuto();
                     break;
                 case SPACE:
                     break;

@@ -79,9 +79,19 @@ public class View extends Stage {
         for (int row = 0; row < Model.ROWS; row++) {
             for (int col = 0; col < Model.COLS; col++) {
                 pen.setFill(colorMap.get((model.getWorld())[row][col]));
-                pen.fillRect(col * cellSize, row * cellSize, cellSize - 1, cellSize - 1);
+                pen.fillRect(col * cellSize, row * cellSize, cellSize , cellSize );
             }
         }
+
+        for(int i=0;i<model.snakes.size()-1;i++){
+            int[] begin= model.snakes.get(i);
+            int[] end = model.snakes.get(i+1);
+            pen.setFill(Color.BLACK);
+            pen.strokeLine(begin[1]*cellSize+cellSize/2,begin[0]*cellSize+cellSize/2,end[1]*cellSize+cellSize/2,end[0]*cellSize+cellSize/2);
+        }
+
+        int[] head = model.getHead();
+        pen.strokeOval(head[1]*cellSize,head[0]*cellSize,cellSize,cellSize);
     }
 
 

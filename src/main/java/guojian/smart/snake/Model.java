@@ -14,7 +14,8 @@ public class Model {
 
     public static final int COLS = 20, ROWS = 20;
 
-    boolean run = false;
+    boolean running = false;
+    boolean auto;
 
     List<int[]> snakes; // 存放蛇的坐标
     List<int[]> walls;  // 存放墙的坐标
@@ -22,6 +23,7 @@ public class Model {
 
     int[] defaultNextStep;
     int[] nextStep;
+
 
     public int[] getHead() {
         return snakes.get(snakes.size() - 1);
@@ -69,7 +71,7 @@ public class Model {
         try {
             int index = new Random().nextInt(list.size());
             return list.get(index);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new Exception("恭喜游戏完美通过!");
         }
     }
@@ -102,44 +104,44 @@ public class Model {
     }
 
     public void stopOrRun() {
-        run = !run;
+        running = !running;
     }
 
     public void update() {
-        if (!run) return;
+        if (!running) return;
+
+        if (auto) {
+            nextStep = new BFS(this).search();
+        }
 
         int[] head = getHead();
         int[] neck = getNeck();
         defaultNextStep = new int[]{2 * head[0] - neck[0], 2 * head[1] - neck[1]};
-
-        if (nextStep == null) {
-            nextStep = defaultNextStep;
-        }
-        if (nextStep[0] == neck[0] && nextStep[1] == neck[1]) {
+        if (nextStep == null || (nextStep[0] == neck[0] && nextStep[1] == neck[1])) {
             nextStep = defaultNextStep;
         }
 
         int type = getWorld()[nextStep[0]][nextStep[1]];
-        if (type == APPLE) {
-            try {
-                eat();
-            }catch (Exception e){
+        switch (type) {
+            case APPLE:
+                try {
+                    eat();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    stop();
+                }
+                break;
+            case BLANK:
+                move();
+                break;
+            default:
                 stop();
-                e.printStackTrace();
-            }
-        }
-        if (type == BLANK) {
-            move();
-        }
-        if (type == WALL || type == SNAKE) {
-            stop();
-            System.out.println("game over!");
         }
 
     }
 
     private void stop() {
-        run = false;
+        running = false;
     }
 
     private void move() {
@@ -150,27 +152,35 @@ public class Model {
 
     private void eat() throws Exception {
         snakes.add(nextStep.clone());
-        app = randomApple(snakes,walls);
+        app = randomApple(snakes, walls);
         nextStep = null;
     }
 
     public void moveUP() {
+        if (auto) return;
         int[] head = getHead();
         nextStep = new int[]{head[0] - 1, head[1]};
     }
 
     public void moveDown() {
+        if (auto) return;
         int[] head = getHead();
         nextStep = new int[]{head[0] + 1, head[1]};
     }
 
     public void moveLeft() {
+        if (auto) return;
         int[] head = getHead();
         nextStep = new int[]{head[0], head[1] - 1};
     }
 
     public void moveRight() {
+        if (auto) return;
         int[] head = getHead();
         nextStep = new int[]{head[0], head[1] + 1};
+    }
+
+    public void onOrOffAuto() {
+        auto=!auto;
     }
 }
