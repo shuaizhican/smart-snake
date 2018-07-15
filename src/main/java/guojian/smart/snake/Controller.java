@@ -26,6 +26,7 @@ public class Controller implements EventHandler {
             switch (keyCode) {
                 case ENTER:
                     m.changeState();
+                    m.changeAuto();
                     break;
                 case SPACE:
                     m.changeAuto();

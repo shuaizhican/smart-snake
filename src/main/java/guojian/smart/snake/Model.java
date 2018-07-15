@@ -208,7 +208,6 @@ public class Model {
      */
     public void update() {
         if (running) {
-//            System.out.println(new Date());
 
             if (auto) {
                 tmpdirection = new BFS(snake, walls, apples, world, head,this).search();

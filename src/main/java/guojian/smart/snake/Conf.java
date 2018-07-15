@@ -13,8 +13,8 @@ public class Conf {
      *
      * 最大长宽255，在BFS类中做了限制。超出255溢出
      */
-    static final int WIDTH = 10;
-    static final int HEIGHT = 10;
+    static final int WIDTH = 20;
+    static final int HEIGHT = 20;
 
     /**
      * 窗口大小

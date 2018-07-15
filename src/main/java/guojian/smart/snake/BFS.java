@@ -176,14 +176,10 @@ public class BFS extends Robot {
      * @return 返回null时表示，没有路径；返回长度为0的列表时，表示目标就在跟前.
      */
     public static List<int[]> searchShortestPath(int[] src, int[] dst, int[][] tmpWorld) {
-
-
         List<int[]> path = new ArrayList<>(COLS * ROWS);
-
         Map<Integer, Integer> m = new HashMap<>();
         Queue<int[]> q = new LinkedList();
         Set<Integer> s = new HashSet();
-
         s.add(src[0] * COLS + src[1]);
         q.offer(src);
         m.put(src[0] * COLS + src[1], -1);
@@ -200,7 +196,6 @@ public class BFS extends Robot {
                 path.remove(0);
                 return path;
             } else {
-
                 for (int i : rs) {
                     for (int j : cs) {
                         if (Math.abs(Math.abs(i) - Math.abs(j)) == 1) {
@@ -219,5 +214,4 @@ public class BFS extends Robot {
         }
         return null;
     }
-
 }
