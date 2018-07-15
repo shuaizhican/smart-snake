@@ -13,10 +13,10 @@ import javafx.scene.input.KeyEvent;
  * 处理键盘事件
  */
 public class Controller implements EventHandler {
-    Model m;
+    Model model;
 
     public Controller(Model model) {
-        m = model;
+        this.model = model;
     }
 
     @Override
@@ -25,23 +25,21 @@ public class Controller implements EventHandler {
             KeyCode keyCode = ((KeyEvent) event).getCode();
             switch (keyCode) {
                 case ENTER:
-                    m.changeState();
-                    m.changeAuto();
+                    model.stopOrRun();
                     break;
                 case SPACE:
-                    m.changeAuto();
                     break;
                 case UP:
-                    m.moveUp();
+                    model.moveUP();
                     break;
                 case DOWN:
-                    m.moveDown();
+                    model.moveDown();
                     break;
                 case LEFT:
-                    m.moveLeft();
+                    model.moveLeft();
                     break;
                 case RIGHT:
-                    m.moveRight();
+                    model.moveRight();
                     break;
                 default:
                     System.out.println(keyCode);

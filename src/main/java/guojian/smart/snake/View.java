@@ -4,6 +4,7 @@
  */
 package guojian.smart.snake;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -30,51 +31,30 @@ public class View extends Stage {
     GraphicsContext pen;
 
     /**
-     * 窗口高
+     * 窗口大小
      */
-    double height = Conf.WINDOW_HEIGHT;
-    /**
-     * 窗口宽
-     */
-    double width = Conf.WINDOW_WIDTH;
-    Model m;
+    double width, height;
 
-    /**
-     * 方块和颜色对应
-     */
-    Map<Integer, Color> colorMap;
-    /**
-     * 方格大小
-     * 设置为正方形窗口边 除以 正方形地图边的值，地图刚好填充满窗口
-     */
-    int cellSize = 20;
+    Model model;
 
-    public View(Model model) {
-        m = model;
+
+    public View(Model model, double width, double height) {
+        this.model = model;
+        this.width = width;
+        this.height = height;
         canvas = new Canvas();
         pen = canvas.getGraphicsContext2D();
-
-        initMap();
-
         Group root = new Group();
         root.getChildren().add(canvas);
         canvas.widthProperty().bind(widthProperty());//绑定canvas的长宽，保持与stage的长宽一致
         canvas.heightProperty().bind(heightProperty());
         setScene(new Scene(root));
-        setTitle(new RamdonTitle().getTitle());//标题
+        setTitle("smart-snake");//标题
         setHeight(height);
         setWidth(width);
         getIcons().add(new Image(this.getClass().getResourceAsStream("/me.jpg")));
         setResizable(false);
         show();//显示
-    }
-
-    private void initMap() {
-        colorMap = new HashMap<>();
-        colorMap.put(Model.BODY, Color.BURLYWOOD);
-        colorMap.put(Model.APPLE, Color.GREEN);
-        colorMap.put(Model.BLANK, Color.BLACK);
-        colorMap.put(Model.WALL, Color.DARKCYAN);
     }
 
     /**
@@ -86,10 +66,19 @@ public class View extends Stage {
     }
 
 
+    Map<Integer, Color> colorMap = new HashMap<Integer, Color>() {{
+        put(Model.SNAKE, Color.BURLYWOOD);
+        put(Model.BLANK, Color.BLACK);
+        put(Model.APPLE, Color.GREEN);
+        put(Model.WALL, Color.DARKCYAN);
+    }};
+
+    int cellSize = 20;
+
     protected void draw() {
-        for (int row = 0; row < m.ROWS; row++) {
-            for (int col = 0; col < m.COLS; col++) {
-                pen.setFill(colorMap.get(m.world[row][col]));
+        for (int row = 0; row < Model.ROWS; row++) {
+            for (int col = 0; col < Model.COLS; col++) {
+                pen.setFill(colorMap.get((model.getWorld())[row][col]));
                 pen.fillRect(col * cellSize, row * cellSize, cellSize - 1, cellSize - 1);
             }
         }
